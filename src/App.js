@@ -1,6 +1,7 @@
 import './App.css';
 import React, { useState, useEffect, useCallback } from "react";
 import MoviesList from "./Components/MoviesList";
+import AddMoviesForm from './Components/AddMoviesForm';
 
 function App() {
 
@@ -15,10 +16,10 @@ function App() {
       const response = await fetch("https://swapi.dev/api/films/");
       if(!response.ok){
         throw new Error('Something went wrong....Retrying')
-        }
+        } 
       const data = await response.json();
   
-      const transformedMovies = data.results.map((movieData) => {
+      const transformedMovies  = data.results.map((movieData) => {
         return {
           id: movieData.episode_id,
           title: movieData.title,
@@ -39,6 +40,11 @@ function App() {
     fetchMoviesHandler();
   }, [fetchMoviesHandler]);
 
+
+  const addMovieHandler = (movie) => {
+    console.log(movie);
+  }
+
   const cancelHandler = () => {
     setMovies(false)
     setError(false)
@@ -58,6 +64,9 @@ function App() {
 
   return (
     <React.Fragment>
+      <section>
+        <AddMoviesForm onAddMovie={addMovieHandler} />
+      </section>
       <section>
         <button onClick={fetchMoviesHandler}>Fetch Movies</button>
       </section>
